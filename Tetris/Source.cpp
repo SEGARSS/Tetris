@@ -29,12 +29,15 @@ int figures[7][4] = {
 //-----------------------------------------------------------------------------------
 // Проверка на выход за границы игрового поля
 //-----------------------------------------------------------------------------------
-bool check() {
+bool check() 
+{
 	for (int i = 0; i < 4; i++)
+	{
 		if (a[i].x < 0 || a[i].x >= N || a[i].y >= M)
 			return 0;
 		else if (field[a[i].y][a[i].x])
 			return 0;
+	}
 
 	return 1;
 }
@@ -75,20 +78,24 @@ int main()
 		{
 			// Пользователь нажал на «крестик» и хочет закрыть окно?
 			if (event.type == Event::Closed)
-				// тогда закрываем его
-				window.close();
+				window.close();// тогда закрываем его
 
 			// Была ли нажата клавиша на клавиатуре?
 			if (event.type == Event::KeyPressed)
-				// Эта кнопка – стрелка вверх?
-				if (event.key.code == Keyboard::Up)
+			
+				if (event.key.code == Keyboard::Up)// Эта кнопка – стрелка вверх?
+				{
 					rotate = true;
-			// Или стрелка вправо?
-				else if (event.key.code == Keyboard::Right)
+				}
+				else if (event.key.code == Keyboard::Right) // Или стрелка вправо?
+				{
 					dx = 1;
-			// Или может стрелка влево?
-				else if (event.key.code == Keyboard::Left)
+				}
+				else if (event.key.code == Keyboard::Left)// Или может стрелка влево?
+				{
 					dx = -1;
+				}
+			
 		}
 
 
@@ -96,21 +103,25 @@ int main()
 			delay = 0.05;
 
 		// Горизонтальное перемещение
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) 
+		{
 			b[i] = a[i];
 			a[i].x += dx;
 		}
 
 		// Если вышли за пределы поля после перемещения, то возвращаем старые координаты 
-		if (!check()) {
+		if (!check()) 
+		{
 			for (int i = 0; i < 4; i++)
 				a[i] = b[i];
 		}
 
 		// Вращение
-		if (rotate) {
+		if (rotate) 
+		{
 			Point p = a[1];// указываем центр вращения
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) 
+			{
 				int x = a[i].y - p.y;// y - y0
 				int y = a[i].x - p.x;// x - x0
 
@@ -119,28 +130,35 @@ int main()
 			}
 
 			// Если вышли за пределы поля после поворота, то возвращаем старые координаты 
-			if (!check()) {
+			if (!check()) 
+			{
 				for (int i = 0; i < 4; i++)
 					a[i] = b[i];
 			}
 		}
 
 		// Движение тетрамино вниз («тик» таймера)
-		if (timer > delay) {
+		if (timer > delay) 
+		{
 			// Горизонтальное перемещение
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) 
+			{
 				b[i] = a[i];
 				a[i].y += 1;
 			}
 
 			// Если вышли за пределы поля после перемещения, то возвращаем старые координаты
-			if (!check()) {
+			if (!check()) 
+			{
 				for (int i = 0; i < 4; i++)
 					field[b[i].y][b[i].x] = colorNum;
 				colorNum = 1 + rand() % 7;
+
 				int n = rand() % 7;// задаем тип тетрамино
+
 				// Первое появление тетрамино на поле?
-				for (int i = 0; i < 4; i++) {
+				for (int i = 0; i < 4; i++) 
+				{
 					a[i].x = figures[n][i] % 2;
 					a[i].y = figures[n][i] / 2;
 				}
@@ -150,21 +168,28 @@ int main()
 		}
 
 		// Первое появление тетрамино на поле?
-		if (ad) {
+		if (ad) 
+		{
 			int n = rand() % 7;// указываем тип тетрамино
 			// Первое появление тетрамино на поле?
 			if (a[0].x == 0)
-				for (int i = 0; i < 4; i++) {
+			{
+				for (int i = 0; i < 4; i++)
+				{
 					a[i].x = figures[n][i] % 2;
 					a[i].y = figures[n][i] / 2;
 				}
+			}
 			ad = false;
 		}
 
 		int k = M - 1;
-		for (int i = M - 1; i > 0; i--) {
+
+		for (int i = M - 1; i > 0; i--) 
+		{
 			int count = 0;
-			for (int j = 0; j < N; j++) {
+			for (int j = 0; j < N; j++) 
+			{
 				if (field[i][j])
 					count++;
 				field[k][j] = field[i][j];
@@ -181,15 +206,19 @@ int main()
 		window.clear(Color::White);
 
 		for (int i = 0; i < M; i++)
-			for (int j = 0; j < N; j++) {
+		{
+			for (int j = 0; j < N; j++) 
+			{
 				if (field[i][j] == 0)
 					continue;
 				tiles.setTextureRect(IntRect(field[i][j] * w, 0, w, w));
 				tiles.setPosition(j * w, i * w);
 				window.draw(tiles);
 			}
+		}
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < 4; i++) 
+		{
 			tiles.setTextureRect(IntRect(colorNum * w, 0, w, w));
 			// Устанавливаем позицию каждого кусочка тетрамино
 			tiles.setPosition(a[i].x * w, a[i].y * w);

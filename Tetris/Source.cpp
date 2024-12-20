@@ -50,7 +50,7 @@ int main()
 
 	// Создание и загрузка текстуры
 	Texture t;
-	t.loadFromFile("D:/Obuchenie/SEGARSS/Tetris/Paint/tiles.png");
+	t.loadFromFile("D:/Obuchenie/C++/tetris/Paint/tiles.png");
 	// Создание спрайта
 	Sprite tiles(t);
 
